@@ -51,13 +51,27 @@
                                 label="Description"
                                 multi-line
                                 id="description" v-model="description" required></v-text-field>
-                            </v-flex>
+                        </v-flex>
+                    </v-layout>
+
+                    <!-- DESCRIPTION TEXT FIELD  -->
+                    <v-layout row>
+                        <v-flex xs12 sm6 offset-sm3>
+                            <v-date-picker v-model="date" color="success"></v-date-picker>
+                        </v-flex>
+                    </v-layout>
+
+                    <v-layout row class="mb-2">
+                        <v-flex xs12 sm6 offset-sm3>
+                            <v-time-picker v-model="time" format="24hr"></v-time-picker>
+                        </v-flex>
                     </v-layout>
 
                     <v-layout row>
                         <v-flex xs12 sm6 offset-sm3>
                             <v-btn color="success" :disabled="!formIsValid"
                             type="submit">Create Meetup</v-btn>
+                            {{ submitableDateTime }}
                         </v-flex>
                     </v-layout>
                 </form>
@@ -69,20 +83,36 @@
 <script>
 export default {
     name: 'CreateMeetup',
+    data () {
+        return {
+            title: '',
+            location: '',
+            imageUrl: '',
+            description: '',
+            date: null,
+            time: new Date()
+        }
+    },
     computed: {
         formIsValid () {
             return this.title !== '' &&
                 this.location !== '' &&
                 this.imageUrl !== '' &&
                 this.description !== ''
-        }
-    },
-    data () {
-        return {
-            title: '',
-            location: '',
-            imageUrl: '',
-            description: ''
+        },
+        submitableDateTime () {
+            const date = new Date(this.time)
+            if(typeof this.time === "string") {
+                let hours = this.time.match(/^(\d+)/)[1]
+                const minutes = this.time.match(/:(\d+)/)[1]
+                date.setHours(hours)
+                date.setMinutes(minutes)
+            }
+            else {
+                date.setHours(this.time.getHours())
+                date.setMinutes(this.time.getMinutes())
+            }
+            return date;
         }
     },
     methods: {
@@ -92,11 +122,11 @@ export default {
                 location: this.location,
                 imageUrl: this.imageUrl,
                 description: this.description,
-                date: new Date()
+                date: this.submitableDateTime
             }
             this.$store.dispatch('createNewMeetup', meetup_data)
             this.$router.push('/meetups')
-        }
+        },
     }
 }
 </script>
