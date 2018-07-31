@@ -7,7 +7,7 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import colors from 'vuetify/es5/util/colors'
 import { store } from './store/data_store'
-
+import DateFilter from './filter/datefilters'
 
 Vue.use(Vuetify, {
     theme: {
@@ -17,9 +17,11 @@ Vue.use(Vuetify, {
         success: colors.teal.lighten1,
         info: colors.cyan.lighten1
     }
-});
+})
 
 Vue.config.productionTip = false
+
+Vue.filter('dateTemplate', DateFilter)
 
 /* eslint-disable no-new */
 new Vue({

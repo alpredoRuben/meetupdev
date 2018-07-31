@@ -13,7 +13,7 @@
                     </v-card-media>
 
                     <v-card-text>
-                        <div class="success--text mb-2">{{ meetupRoom.date }} - {{ meetupRoom.location}}</div>
+                        <div class="success--text mb-2">{{ meetupRoom.date | dateTemplate }} - {{ meetupRoom.location}}</div>
                         <div>
                             {{ meetupRoom.description }}
                         </div>
